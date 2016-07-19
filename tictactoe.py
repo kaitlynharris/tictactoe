@@ -55,17 +55,34 @@ def makeMove(board, column, row, player):
 
 def verifyMove(player, board, row, column):
     if checkMove(board, row, column):
-        print("You have chosen to place your {} at {}{}".format(player,column,row))
+        print("You have chosen to place your {} at {},{}".format(player,column,row))
         makeMove(board, column, row, player)
         printBoard(board)
         if checkWin(player, board):
             endGame(player, board)
         else:
             player = switchPlayer(player)
-            return move(player, board)
+            #changed move() to catGame()
+            return catGame(player, board)
     else:
         print "This space is already taken"
-        return move(player, board)
+        #changed move() to catGame()
+        return catGame(player, board)
+
+#added catGame code
+def catGame(player, board):
+    cat=[]
+    for row in range(4):
+        if (board[row][1] == '-' or board[row][2] == '-' or board[row][3] == '-'):
+            cat.append("nocat")
+        else:
+            cat.append("catgame")
+    if ("nocat" in cat):
+        move(player, board)
+    else:
+        print("CAT'S GAME")
+        endGame(player, board)
+        
 
 def move(player, board):
     print("Player {}, please make your move".format(player))
@@ -84,19 +101,19 @@ def checkWin(player, board):
    for column in range(4):
        if board[1][column] == player:
            if (board[2][column] == player and board[3][column]==player):
-               print("You win")
+               print("Player {} has won".format(player))
                return True
    for row in range(4):
        if board[row][3] == player:
            if (board[row][2]==player and board[row][1]== player):
-               print ("You win")
+               print ("Player {} has won".format(player))
                return True
    if (board[2][2]== player):
        if (board[1][1]==player and board[3][3]==player):
-           print ("You win")
+           print ("Player {} has won".format(player))
            return True
        elif (board[1][3]== player and board[3][1]==player):
-           print ("You win")
+           print ("Player {} has won".format(player))
            return True
    else:
        return False
@@ -122,7 +139,8 @@ def main():
     board = newBoard()
     print "Welcome to Tic Tac Toe"
     printBoard(board)
-    move(player, board)
+    catGame(player, board)
+    #move(player, board)
 
 if __name__ == '__main__':
     main()
